@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+*.RData
+.Ruserdata
+output/*.RData
+R/script.R
+data
+manuscript
