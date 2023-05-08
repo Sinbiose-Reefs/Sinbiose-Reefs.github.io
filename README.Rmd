@@ -1,0 +1,37 @@
+---
+title: "ReefSYN - Policy Brief"
+author: "ALLuza"
+date: "2023-05-08"
+output: github_document
+---
+
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Policy brief delivered to CNPq.
+
+Most information used to produce infographics were taken from:
+
+Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis. Relatório de qualidade do meio ambiente. [recurso eletrônico]: RQMA Brasil 2020 / Hanry Alves Coelho, Andrea Alimandro Corrêa (coordenação). – Brasília, DF: IBAMA, 2022. 558 p. Accessed in: 08/05/2023. Available at: [https://www.gov.br/ibama/pt-br/phocadownload/qualidadeambiental/relatorios/2022/2022-06-03_RQMA_Brasil_2020.pdf]
+
+
+#### This paper was produced using the following software and associated packages:
+
+```{r pressure, echo=F,warning=F,message=F}
+
+
+source("R/packages.R")
+sessionInfo()
+
+
+```
+
