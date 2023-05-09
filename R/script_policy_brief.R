@@ -97,7 +97,41 @@ globeEEZ <- readOGR(here("data",
 
 # BR eez
 br_eez <-globeEEZ[grep("Brazilian",globeEEZ$EEZ),] 
+br_eez <- gUnaryUnion(br_eez)
 
+# project
+br_eez_lambert <- spTransform(br_eez, 
+                              CRS("+proj=laea +lat_0=0 +lon_0=0"))
+
+
+
+# over mpas
+over_mpas <- over (mpas_lambert, br_eez_lambert)
+
+# subset of marine PAs
+marine_pas_lambert<- mpas_lambert [which(is.na(over_mpas)!= T),]
+marine_pas<- mpas [which(is.na(over_mpas)!= T),]
+
+# equal crs
+crs(br_eez) <-  crs (mpas)
+
+
+# here we filter with 0.8 (or 80%) threshold
+sf_use_s2(FALSE)
+
+
+# intersection
+intersection_ZEE_mpas<- st_intersection(st_as_sf(br_eez), st_as_sf(marine_pas)) 
+
+# filter by area
+intersection_ZEE_mpas <- intersection_ZEE_mpas %>% 
+  filter(st_area(.) >= 0.005*st_area(st_as_sf(marine_pas)))
+intersection_ZEE_mpas <- as_Spatial(intersection_ZEE_mpas)
+# group
+f.mpa<-fortify(intersection_ZEE_mpas, region="fid")
+f.mpa2<- cbind (f.mpa, 
+                colour_mpa = intersection_ZEE_mpas@data [match (f.mpa$id,
+                                                           intersection_ZEE_mpas$fid),]$grupo)
 
 
 
@@ -119,34 +153,54 @@ alt_stars <- st_as_stars(elevation_agg)# st format
 
 plot5 <- ggplot() +
   
-  geom_stars(
-    data = alt_stars,
-    aes(x = x, y = y,fill = elevation),#file38502541b61),
-    downsample = 0,alpha=1
-  ) +
-  scale_fill_continuous(low = "white", high = "gray") +
-  geom_polygon (data = South_America, aes(long, lat,group = group), 
-                fill="gray",alpha=0.5,colour='gray70') + 
-  geom_polygon (data = br_eez, aes(long, lat,group = group), 
-                fill="gray",alpha=0.5,colour='gray70') + 
-  geom_polygon (data = Brazil_latlong, aes(long, lat,group = group), 
-                fill="gray",alpha=0.5,colour='gray70') + 
-    
+  theme_classic()+
+  
+  #geom_stars(
+  #  data = alt_stars,
+  #  aes(x = x, y = y,fill = elevation),#file38502541b61),
+  #  downsample = 0,alpha=1
+  #) +
+  
+  
+  #geom_polygon (data = South_America, aes(long, lat,group = group), 
+  #              fill="gray",alpha=0.5,colour='gray70') + 
+  
+
   geom_polygon (data = BR_reefs, aes(long, lat,group = group), 
-                fill="orange",alpha=1,colour="orange",size=1.25)  +
+              fill= "#bf3720",alpha=1,colour="#bf3720",size=1.25)  +
+  
   geom_polygon (data = spsp, aes(long, lat,group = group), 
-                fill="orange",alpha=0.5,colour="orange",size=1.25)  +
+                fill= "#bf3720",alpha=1,colour="#bf3720",size=1.25)   +
+
+# no take : #ffd870
+# other: #ffc222
+
   
+  geom_polygon (data = f.mpa2 , aes(x=long, 
+                                    y=lat,
+                                    group = group,
+                                    fill=colour_mpa),
+              
+              alpha=0.5,
+              size=0)   +
+  scale_fill_manual("MPA",
+                    values = c("PI" = "#ffc222",
+                               "US" = "#ffd870"))+
   
-  #scale_colour_manual(values = c("orange", "red"))+
-  #scale_fill_manual(values = c("orange", "red"))+
-  coord_sf(xlim = c(-50, -20), ylim = c(-30, 8), expand = F) + 
+  geom_polygon (data = br_eez, aes(long, lat,group = group), 
+                fill="gray",alpha=0.01,colour='gray70',linetype=2) + 
+  
+  geom_polygon (data = Brazil_latlong, aes(long, lat,group = group), 
+                fill="#7da8ba",alpha=0.5,colour=NA) + 
+  
+   coord_sf(xlim = c(-52, -20), ylim = c(-32, 10), expand = F) + 
   theme(legend.position = c(0.65,0.1),
         legend.direction = "horizontal",
         legend.title = element_blank(),
+        #axis.text = element_blank(),
         legend.text = element_text(size=8))+
-  xlab("Latitude") +
-  ylab ("Longitude")
+  xlab("Longitude") +
+  ylab ("Latitude")
 
 
 #new_scale_fill()  ## geoms added after this will use a new scale definition
@@ -247,7 +301,7 @@ pie_charts_fish <- lapply (sites_fish, function (i)
              axis.ticks = element_blank(),
              panel.border = element_rect(colour = "black", fill=NA, 
                                          size=2)) + 
-      scale_fill_manual (values = c ("#0AA1DD", "#C4DDFF"))
+      scale_fill_manual (values = c ("#3d5a80", "#7da8ba"))
 )
 
 
@@ -257,7 +311,7 @@ df_SR_fish$site <- factor(df_SR_fish$site,
                           levels = sites)
 
 
-
+# 
 fish_charts <- df_SR_fish%>%
 
   ggplot(aes(x=0, y = value, 
@@ -271,20 +325,20 @@ fish_charts <- df_SR_fish%>%
   geom_text(aes(x=0,y = value/max(value), label=value))+
   theme_classic() +
   theme(legend.position = "top")+ 
-  scale_fill_manual (values = c ("#0AA1DD", "#C4DDFF"))
+  scale_fill_manual (values = c ("#3d5a80", "#7da8ba"))
 
 
 
 # -------------------------------
 
 ## benthic event core data
-aued_benthos_event_core <- read.csv ("../../ReefSYN_data/DwC_output/AAued_spatialData/event_core.csv")
+aued_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/AAued_spatialData/event_core.csv")
       
 ## benthic occurrence data
-aued_benthos_emof <- read.csv ("../../ReefSYN_data/DwC_output/AAued_spatialData/DF_eMOF.csv")
+aued_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/AAued_spatialData/DF_eMOF.csv")
 
 ## benthic occurrence data
-aued_benthos_occ <- read.csv ("../../ReefSYN_data/DwC_output/AAued_spatialData/DF_occ.csv")
+aued_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/AAued_spatialData/DF_occ.csv")
 
 # matching event IDs to find site and locality (variables_we_want)
 variables_we_want <- c("site","locality","year")
@@ -303,13 +357,13 @@ benthos_SN_data_aued<- cbind (benthos_SN_data_aued,
 # -----------------------------------------------------
 # francini
 ## benthic event core data
-francini_benthos_event_core <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_spatialData/event_core.csv")
+francini_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_spatialData/event_core.csv")
 
 ## benthic occurrence data
-francini_benthos_emof <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_spatialData/DF_eMOF.csv")
+francini_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_spatialData/DF_eMOF.csv")
 
 ## benthic occurrence data
-francini_benthos_occ <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_spatialData/DF_occ.csv")
+francini_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_spatialData/DF_occ.csv")
 
 # matching event IDs to find site and locality (variables_we_want)
 benthos_SN_data_francini <-francini_benthos_event_core [match (francini_benthos_emof$eventID,
@@ -330,13 +384,13 @@ benthos_SN_data_francini<- cbind (benthos_SN_data_francini,
 # rio grande do norte (ross et al. )
 
 ## benthic event core data
-ross_benthos_event_core <- read.csv ("../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/event_core_benthos.csv")
+ross_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/event_core_benthos.csv")
 
 ## benthic occurrence data
-ross_benthos_emof <- read.csv ("../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/DF_eMOF_benthos.csv")
+ross_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/DF_eMOF_benthos.csv")
 
 ## benthic occurrence data
-ross_benthos_occ <- read.csv ("../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/DF_occ_benthos.csv")
+ross_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/GLongo_NRoss_spatialData/DF_occ_benthos.csv")
 
 # matching event IDs to find site and locality (variables_we_want)
 benthos_SN_data_ross <-ross_benthos_event_core [match (ross_benthos_emof$eventID,
@@ -364,13 +418,13 @@ benthos_SN_data_ross$site <- "rgnor"
 # abrolhos bank
 
 ## benthic event core data
-abrolhos_benthos_event_core <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/event_core_benthos.csv")
+abrolhos_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/event_core_benthos.csv")
 
 ## benthic occurrence data
-abrolhos_benthos_emof <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/DF_eMOF_benthos.csv")
+abrolhos_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/DF_eMOF_benthos.csv")
 
 ## benthic occurrence data
-abrolhos_benthos_occ <- read.csv ("../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/DF_occ_benthos.csv")
+abrolhos_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/RFrancini_timeSeries_abrolhos/DF_occ_benthos.csv")
 
 # matching event IDs to find site and locality (variables_we_want)
 benthos_SN_data_abrolhos <- abrolhos_benthos_event_core [match (abrolhos_benthos_emof$eventID,
@@ -392,13 +446,13 @@ benthos_SN_data_abrolhos<- cbind (benthos_SN_data_abrolhos,
 # PELD ILOC bank
 
 ## benthic event core data
-PELD_benthos_event_core <- read.csv ("../../ReefSYN_data/DwC_output/PELD_iloc_benthos/event_core.csv")
+PELD_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/event_core.csv")
 colnames(PELD_benthos_event_core)[which(colnames(PELD_benthos_event_core) == "island")] <- "site"
 ## benthic occurrence data
-PELD_benthos_emof <- read.csv ("../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_eMOF.csv")
+PELD_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_eMOF.csv")
 
 ## benthic occurrence data
-PELD_benthos_occ <- read.csv ("../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_occ.csv")
+PELD_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_occ.csv")
 
 
 # matching event IDs to find site and locality (variables_we_want)
@@ -603,7 +657,7 @@ pie_benthos <- lapply (sites_benthos, function (i)
                panel.border = element_rect(colour = "black", fill=NA, 
                                            size=2)) +
       
-      scale_fill_manual (values = c ("#82954B", "#EFD345","#FFEF82"))
+      scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
       
 )
 
@@ -623,7 +677,7 @@ grid.arrange(# map
              pie_charts_fish[[6]],
              pie_charts_fish[[7]], 
              pie_charts_fish[[8]], 
-             pie_charts_fish[[9]], 
+             #pie_charts_fish[[9]], 
              # benthos
              pie_benthos[[1]],
              pie_benthos[[2]],
@@ -633,7 +687,7 @@ grid.arrange(# map
              pie_benthos[[6]],
              pie_benthos[[7]], 
              pie_benthos[[8]],
-             pie_benthos[[9]], 
+             # pie_benthos[[9]], 
              #top=textGrob("Contribution of reefal tourism do GDP"),
              nrow=9,ncol =5,
              layout_matrix = rbind (c(NA,NA,11,NA,NA), 
@@ -674,7 +728,7 @@ benthic_charts <- pie_charts_benthos %>%
   theme_classic() +
   theme(legend.position = "top") +
   
-  scale_fill_manual (values = c ("#82954B", "#EFD345","#FFEF82"))
+  scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
 
 
 pdf (here ("output", "fig1_raw_opt2.pdf"),width = 10,height=7)
@@ -709,17 +763,6 @@ plot(BR_reefs,add=T,col="orange")
 dev.off()
 
 # project
-br_eez_lambert <- spTransform(br_eez, 
-                              CRS("+proj=laea +lat_0=0 +lon_0=0"))
-
-
-
-# over mpas
-over_mpas <- over (mpas_lambert, br_eez_lambert)
-
-# subset of marine PAs
-marine_pas_lambert<- mpas_lambert [which(is.na(over_mpas$MARREGION)!= T),]
-
 # esfera das MPAs
 #data.frame (t(table(marine_pas_lambert$esfera))) %>%
 #  
@@ -967,4 +1010,4 @@ data.frame (reef_area = unlist (reef_area_within_mpas)/1000,
 
 ggsave (file = here ("output", "contribution_MPA.pdf"))
 
-#save.image()
+save.image()
