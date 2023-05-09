@@ -71,13 +71,35 @@ spsp<-readOGR (here ("data","magris_reef_map","SPSP"),"PS11_2")
 South_America <-  readOGR (here ("data","South_America","South_America.shp")) 
 Brazil_latlong <- South_America[which(South_America$COUNTRY == "Brazil"),]
 pdf(file= here ("output", "BR_map.pdf"))
-plot()
+
 plot(Brazil_latlong)
 
 dev.off()
 # lambert projetction
 Brazil <- spTransform(Brazil, 
                             CRS("+proj=laea +lat_0=0 +lon_0=0"))
+
+
+
+# ======================================================
+#  mpa & EEZ data
+
+mpas <- readOGR (here ("data","MPAs"),
+                 layer = "cnuc_2021_02")
+mpas_lambert <- spTransform(mpas, 
+                            CRS("+proj=laea +lat_0=0 +lon_0=0"))
+
+# remove non-marine PAs
+globeEEZ <- readOGR(here("data",
+                         "Intersect_EEZ_IHO_v4_2020",
+                         "Intersect_EEZ_IHO_v4_2020"), 
+                    layer = "Intersect_EEZ_IHO_v4_2020")
+
+# BR eez
+br_eez <-globeEEZ[grep("Brazilian",globeEEZ$EEZ),] 
+
+
+
 
 # elevation
 # https://cran.r-project.org/web/packages/elevatr/vignettes/introduction_to_elevatr.html
@@ -105,6 +127,11 @@ plot5 <- ggplot() +
   scale_fill_continuous(low = "white", high = "gray") +
   geom_polygon (data = South_America, aes(long, lat,group = group), 
                 fill="gray",alpha=0.5,colour='gray70') + 
+  geom_polygon (data = br_eez, aes(long, lat,group = group), 
+                fill="gray",alpha=0.5,colour='gray70') + 
+  geom_polygon (data = Brazil_latlong, aes(long, lat,group = group), 
+                fill="gray",alpha=0.5,colour='gray70') + 
+    
   geom_polygon (data = BR_reefs, aes(long, lat,group = group), 
                 fill="orange",alpha=1,colour="orange",size=1.25)  +
   geom_polygon (data = spsp, aes(long, lat,group = group), 
@@ -113,7 +140,7 @@ plot5 <- ggplot() +
   
   #scale_colour_manual(values = c("orange", "red"))+
   #scale_fill_manual(values = c("orange", "red"))+
-  coord_sf(xlim = c(-50, -28), ylim = c(-30, 2), expand = F) + 
+  coord_sf(xlim = c(-50, -20), ylim = c(-30, 8), expand = F) + 
   theme(legend.position = c(0.65,0.1),
         legend.direction = "horizontal",
         legend.title = element_blank(),
@@ -124,8 +151,9 @@ plot5 <- ggplot() +
 
 #new_scale_fill()  ## geoms added after this will use a new scale definition
 
+pdf (file = here ("output", "maps_with_altitude.pdf"))
 plot5
-
+dev.off()
 
 #  ================================
 
@@ -672,23 +700,6 @@ grid.arrange(# map
 
 dev.off()
 
-
-# ======================================================
-#  mpa & EEZ data
-
-mpas <- readOGR (here ("data","MPAs"),
-                 layer = "cnuc_2021_02")
-mpas_lambert <- spTransform(mpas, 
-                            CRS("+proj=laea +lat_0=0 +lon_0=0"))
-
-# remove non-marine PAs
-globeEEZ <- readOGR(here("data",
-                         "Intersect_EEZ_IHO_v4_2020",
-                         "Intersect_EEZ_IHO_v4_2020"), 
-                    layer = "Intersect_EEZ_IHO_v4_2020")
-
-# BR eez
-br_eez <-globeEEZ[grep("Brazilian",globeEEZ$EEZ),] 
 
 # plot
 pdf(file= here ("output", "BR_EEZ.pdf"))
