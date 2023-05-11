@@ -1,24 +1,104 @@
-ReefSYN - Policy Brief
+Resumo de política apresentado ao CNPq / Policy brief presented to the
+Brazilian CNPq
 ================
-ALLuza
+Reef Synthesis Working Group (Pesquisador de pós-doutorado: André L.
+Luza
 2023-05-08
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 <!-- badges: end -->
 
-Policy brief delivered to CNPq.
+<img src="output/Logo Completa CORES GDE.png" width="60%" height="60%" style="display: block; margin: auto;" />
 
-Most information used to produce infographics were taken from:
+## 
+
+### Fontes de dados / data sources
+
+Os dados sobre a representatividade das áreas marinhas protegidas dentro
+da Zona Econômica Exclusiva do Brasil foram obtidos da seguinte fonte /
+*Data about the representation of marine protected areas within the
+Economic Exclusive Zone were gathered from the following source*:
 
 Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais
 Renováveis. Relatório de qualidade do meio ambiente. \[recurso
 eletrônico\]: RQMA Brasil 2020 / Hanry Alves Coelho, Andrea Alimandro
-Corrêa (coordenação). – Brasília, DF: IBAMA, 2022. 558 p. Accessed in:
-08/05/2023. Available at:
+Corrêa (coordenação). – Brasília, DF: IBAMA, 2022. 558 p. Acessado em /
+Accessed in: 08/05/2023. Disponível em / Available at:
 \[<https://www.gov.br/ibama/pt-br/phocadownload/qualidadeambiental/relatorios/2022/2022-06-03_RQMA_Brasil_2020.pdf>\]
 
-#### This paper was produced using the following software and associated packages:
+As porcentagens de representatividade de ecossistemas recifais dentro de
+áreas marinhas protegidas foram obtidas de Rafael Magris, baseadas em
+dados do Instituto Chico Mendes de Conservação da Biodiversidade
+(ICMBio) / *The representativeness of reef ecosystems within marine
+protected areas were obtained from Rafael Magris, based on data from the
+Chico Mendes Institute for Biodiversity Conservation (ICMBio)*.
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+A lista de espécies de peixes recifais foi obtida da seguinte fonte /
+*The reef fish checklist was gathered from the following reference*:
+
+Pinheiro, HT, Rocha, LA, Macieira, RM, et al. South-western Atlantic
+reef fishes: Zoogeographical patterns and ecological drivers reveal a
+secondary biodiversity centre in the Atlantic Ocean. Divers Distrib.
+2018; 24: 951– 965. <https://doi.org/10.1111/ddi.12729>
+
+A lista de táxons bentônicos foi produzida segundo as seguintes fontes
+de dados (alguns dados ainda não foram publicados) / *The list of
+benthic taxa was produced using data from the following references (some
+data are unpublished)*:
+
+Aued AW, Smith F, Quimbayo JP, Cândido DV, Longo GO, Ferreira CEL, …
+Segal B (2018). Large-scale patterns of benthic marine communities in
+the Brazilian Province. PLoS ONE, 13(6), e0198452.
+<https://doi.org/10.1371/journal.pone.0198452>
+
+Santana, EFC, Mies, M, Longo, GO, Menezes, R, Aued, AW, Luza, AL, …
+Francini-Filho, RB. (2023). Turbidity shapes shallow Southwestern
+Atlantic benthic reef communities. Marine Environmental Research, 183,
+105807. <https://doi.org/10.1016/j.marenvres.2022.105807>
+
+Roos NC, Pennino MG, Carvalho AR, Longo GO (2019) Drivers of abundance
+and biomass of Brazilian parrotfishes. Mar Ecol Prog Ser 623:117-130.
+<https://doi.org/10.3354/meps13005>
+
+Francini-Filho RB, Coni EOC, Meirelles PM, Amado-Filho GM, Thompson FL,
+Pereira-Filho GH, et al. (2013) Dynamics of Coral Reef Benthic
+Assemblages of the Abrolhos Bank, Eastern Brazil: Inferences on Natural
+and Anthropogenic Drivers. PLoS ONE 8(1): e54260.
+<https://doi.org/10.1371/journal.pone.0054260>
+
+Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados)
+/ *LTER Brazilian Oceanic Islands (unpublished data)*.
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Os dados de desembarque foram obtidos da seguinte fonte / *Data of
+fisheries’ landings were gathered from*:
+
+Freire KMF, Almeida da Silva Z, Trindade Amador J, Aragão JA, Araújo da
+Rocha AR, Ávila-da-Silva AO, Bentes B, Carneiro MH, Chiquieri J,
+Fernandes Freire C, Bezerra Figueiredo M, Hostim-Silva M, Jimenez EA,
+Keunecke KA, Lopes PF de M, Mendonça J, Musiello- Fernandes J, Olavo G,
+Primitivo C, Rotundo M, Santana R, Sant’Ana R, Scheidt G, Abdon da Silva
+LM, Trindade-Santos I, Velasco G, Vianna M (2021) Reconstruction of
+Marine Commercial Landings for the Brazilian Industrial and Artisanal
+Fisheries From 1950 to 2015. Front Mar Sci 8:1–16. DOI:
+10.3389/fmars.2021.659110
+
+#### Decisões analíticas importantes / *Important analytical decisions*:
+
+- Dados de desembarque de 2000 pra diante foram utilizados para o
+  cálculo da contribuição da pesca artesanal e industrial para o
+  montante total desembarcado nas regiões / *Landing data from 2000
+  onwards were used to calculate the contribution of artisanal and
+  industrial fisheries sectors to the total amount landed in the
+  regions*.
+
+#### O resumo foi produzido utilizando o seguinte software e pacotes / *This policy brief was produced using the following software and associated packages*:
 
     ## R version 4.3.0 (2023-04-21 ucrt)
     ## Platform: x86_64-w64-mingw32/x64 (64-bit)
@@ -53,14 +133,15 @@ Corrêa (coordenação). – Brasília, DF: IBAMA, 2022. 558 p. Accessed in:
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.3       xfun_0.39          lattice_0.21-8     tzdb_0.3.0        
     ##  [5] tools_4.3.0        generics_0.1.3     parallel_4.3.0     proxy_0.4-27      
-    ##  [9] fansi_1.0.4        pkgconfig_2.0.3    KernSmooth_2.23-20 lifecycle_1.0.3   
-    ## [13] compiler_4.3.0     munsell_0.5.0      terra_1.7-29       codetools_0.2-19  
-    ## [17] htmltools_0.5.5    class_7.3-21       yaml_2.3.7         pillar_1.9.0      
-    ## [21] classInt_0.4-9     lwgeom_0.2-11      zip_2.3.0          tidyselect_1.2.0  
-    ## [25] digest_0.6.31      stringi_1.7.12     rprojroot_2.0.3    fastmap_1.1.1     
-    ## [29] colorspace_2.1-0   cli_3.6.1          magrittr_2.0.3     utf8_1.2.3        
-    ## [33] e1071_1.7-13       foreign_0.8-84     withr_2.5.0        scales_1.2.1      
-    ## [37] timechange_0.2.0   rmarkdown_2.21     httr_1.4.5         progressr_0.13.0  
-    ## [41] hms_1.1.3          evaluate_0.20      knitr_1.42         rlang_1.1.1       
-    ## [45] Rcpp_1.0.10        glue_1.6.2         DBI_1.1.3          rstudioapi_0.14   
-    ## [49] jsonlite_1.8.4     plyr_1.8.8         R6_2.5.1           units_0.8-2
+    ##  [9] fansi_1.0.4        highr_0.10         pkgconfig_2.0.3    KernSmooth_2.23-20
+    ## [13] lifecycle_1.0.3    compiler_4.3.0     munsell_0.5.0      terra_1.7-29      
+    ## [17] codetools_0.2-19   htmltools_0.5.5    class_7.3-21       yaml_2.3.7        
+    ## [21] pillar_1.9.0       classInt_0.4-9     lwgeom_0.2-11      zip_2.3.0         
+    ## [25] tidyselect_1.2.0   digest_0.6.31      stringi_1.7.12     rprojroot_2.0.3   
+    ## [29] fastmap_1.1.1      colorspace_2.1-0   cli_3.6.1          magrittr_2.0.3    
+    ## [33] utf8_1.2.3         e1071_1.7-13       foreign_0.8-84     withr_2.5.0       
+    ## [37] scales_1.2.1       timechange_0.2.0   rmarkdown_2.21     httr_1.4.6        
+    ## [41] progressr_0.13.0   hms_1.1.3          evaluate_0.20      knitr_1.42        
+    ## [45] rlang_1.1.1        Rcpp_1.0.10        glue_1.6.2         DBI_1.1.3         
+    ## [49] rstudioapi_0.14    jsonlite_1.8.4     plyr_1.8.8         R6_2.5.1          
+    ## [53] units_0.8-2
