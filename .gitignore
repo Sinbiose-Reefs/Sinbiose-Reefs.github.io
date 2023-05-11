@@ -4,6 +4,7 @@
 *.RData
 .Ruserdata
 output/*.RData
+output/*.svg
 R/script.R
 data
 manuscript
