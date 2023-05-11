@@ -8,7 +8,6 @@
 source ("R/packages.R")
 
 
-
 # ====================== 
 
 # magris data (reef area)
@@ -70,13 +69,14 @@ spsp<-readOGR (here ("data","magris_reef_map","SPSP"),"PS11_2")
 # shape of SA
 South_America <-  readOGR (here ("data","South_America","South_America.shp")) 
 Brazil_latlong <- South_America[which(South_America$COUNTRY == "Brazil"),]
+
+# save pdf 
 pdf(file= here ("output", "BR_map.pdf"))
-
 plot(Brazil_latlong)
-
 dev.off()
-# lambert projetction
-Brazil <- spTransform(Brazil, 
+
+# lambert projection
+Brazil <- spTransform(Brazil_latlong, 
                             CRS("+proj=laea +lat_0=0 +lon_0=0"))
 
 
@@ -99,11 +99,13 @@ globeEEZ <- readOGR(here("data",
 br_eez <-globeEEZ[grep("Brazilian",globeEEZ$EEZ),] 
 br_eez <- gUnaryUnion(br_eez)
 
+pdf (here ("output", "br_eez.pdf"))
+plot(br_eez)
+dev.off()
+
 # project
 br_eez_lambert <- spTransform(br_eez, 
                               CRS("+proj=laea +lat_0=0 +lon_0=0"))
-
-
 
 # over mpas
 over_mpas <- over (mpas_lambert, br_eez_lambert)
@@ -115,10 +117,8 @@ marine_pas<- mpas [which(is.na(over_mpas)!= T),]
 # equal crs
 crs(br_eez) <-  crs (mpas)
 
-
 # here we filter with 0.8 (or 80%) threshold
 sf_use_s2(FALSE)
-
 
 # intersection
 intersection_ZEE_mpas<- st_intersection(st_as_sf(br_eez), st_as_sf(marine_pas)) 
@@ -127,55 +127,24 @@ intersection_ZEE_mpas<- st_intersection(st_as_sf(br_eez), st_as_sf(marine_pas))
 intersection_ZEE_mpas <- intersection_ZEE_mpas %>% 
   filter(st_area(.) >= 0.005*st_area(st_as_sf(marine_pas)))
 intersection_ZEE_mpas <- as_Spatial(intersection_ZEE_mpas)
+
 # group
 f.mpa<-fortify(intersection_ZEE_mpas, region="fid")
 f.mpa2<- cbind (f.mpa, 
                 colour_mpa = intersection_ZEE_mpas@data [match (f.mpa$id,
                                                            intersection_ZEE_mpas$fid),]$grupo)
-
-
-
-# elevation
-# https://cran.r-project.org/web/packages/elevatr/vignettes/introduction_to_elevatr.html
-# elevation
-require(elevatr)
-#elevation <- get_elev_raster(BR_reefs, z = 9,expand=10)
-#elevation_agg <- aggregate(elevation, fact=50)
-#writeRaster(elevation_agg,file = here ("data","elevation", "elevation.tiff"),overwrite=T)
-
-# transform
-require(stars)
-elevation_agg <- raster (here ("data", "elevation","elevation.tiff"))
-alt_stars <- st_as_stars(elevation_agg)# st format
-
-
 # plot 
-
 plot5 <- ggplot() +
   
   theme_classic()+
   
-  #geom_stars(
-  #  data = alt_stars,
-  #  aes(x = x, y = y,fill = elevation),#file38502541b61),
-  #  downsample = 0,alpha=1
-  #) +
-  
-  
-  #geom_polygon (data = South_America, aes(long, lat,group = group), 
-  #              fill="gray",alpha=0.5,colour='gray70') + 
-  
-
   geom_polygon (data = BR_reefs, aes(long, lat,group = group), 
               fill= "#bf3720",alpha=1,colour="#bf3720",size=1.25)  +
   
   geom_polygon (data = spsp, aes(long, lat,group = group), 
                 fill= "#bf3720",alpha=1,colour="#bf3720",size=1.25)   +
 
-# no take : #ffd870
-# other: #ffc222
 
-  
   geom_polygon (data = f.mpa2 , aes(x=long, 
                                     y=lat,
                                     group = group,
@@ -202,12 +171,12 @@ plot5 <- ggplot() +
   xlab("Longitude") +
   ylab ("Latitude")
 
-
-#new_scale_fill()  ## geoms added after this will use a new scale definition
-
-pdf (file = here ("output", "maps_with_altitude.pdf"))
+# save
+pdf (file = here ("output", "maps_with_reefs.pdf"))
 plot5
 dev.off()
+
+
 
 #  ================================
 
@@ -218,14 +187,13 @@ fish_data <- read.csv(here ("data",
                             "brazilian-reef-fish-table-04-mar-18-website.xlsx - Database.csv"),
                       sep = ",")
 
-
 #fish_data
-
 fish_data_df <- (melt (fish_data, id.vars = c("Relation" ,"X10.familias" ,
                                                "X40.familias","Type",
                                                "Order","Family","Genus",
                                                "Species","authority",
                                                "Popular_name_PT","English_name")))
+fish_data_df$variable <- as.character(fish_data_df$variable)
 
 # interesting variables
 variables <-c("BR","RR", "RB","TP","SG","SB", "EM", "OC",
@@ -249,7 +217,7 @@ BR_endemics <- fish_data_df[which(fish_data_df$variable == "BR.Endêmico" &
 
 
 # statistics for a few sites
-sites<-c("PML.PAMA","Atol","FN","RN","Abr", "Tri","ArC", #"IGr", 
+sites<-c("PML.PAMA","Atol","FN","RN","Abr", "Tri","ArC",  
          "SC")
 
 
@@ -311,7 +279,7 @@ df_SR_fish$site <- factor(df_SR_fish$site,
                           levels = sites)
 
 
-# 
+# produce charts
 fish_charts <- df_SR_fish%>%
 
   ggplot(aes(x=0, y = value, 
@@ -330,6 +298,7 @@ fish_charts <- df_SR_fish%>%
 
 
 # -------------------------------
+
 
 ## benthic event core data
 aued_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/AAued_spatialData/event_core.csv")
@@ -400,18 +369,13 @@ benthos_SN_data_ross <-ross_benthos_event_core [match (ross_benthos_emof$eventID
 benthos_SN_data_ross<- cbind (benthos_SN_data_ross,
                                   ross_benthos_emof)
 
-
 # bind taxa id
 benthos_SN_data_ross<- cbind (benthos_SN_data_ross,
                                spp = ross_benthos_occ$scientificNameAccepted [match (benthos_SN_data_ross$occurrenceID,
                                                                                      ross_benthos_occ$occurrenceID)])
 
-
-
 # all rio grande do norte
 benthos_SN_data_ross$site <- "rgnor"
-
-
 
 
 # -------------------------------
@@ -439,21 +403,18 @@ benthos_SN_data_abrolhos<- cbind (benthos_SN_data_abrolhos,
                               spp = abrolhos_benthos_occ$scientificNameAccepted [match (benthos_SN_data_abrolhos$occurrenceID,
                                                                                         abrolhos_benthos_occ$occurrenceID)])
 
-
-
-
 # -------------------------------
 # PELD ILOC bank
 
 ## benthic event core data
 PELD_benthos_event_core <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/event_core.csv")
 colnames(PELD_benthos_event_core)[which(colnames(PELD_benthos_event_core) == "island")] <- "site"
+
 ## benthic occurrence data
 PELD_benthos_emof <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_eMOF.csv")
 
 ## benthic occurrence data
 PELD_benthos_occ <- read.csv ("../../../ReefSYN_data/DwC_output/PELD_iloc_benthos/DF_occ.csv")
-
 
 # matching event IDs to find site and locality (variables_we_want)
 benthos_SN_data_PELD <- PELD_benthos_event_core [match (PELD_benthos_emof$eventID,
@@ -468,12 +429,9 @@ benthos_SN_data_PELD <- cbind (benthos_SN_data_PELD,
                                   spp = PELD_benthos_occ$scientificNameAccepted [match (benthos_SN_data_PELD$occurrenceID,
                                                                                         PELD_benthos_occ$occurrenceID)])
 
-
+# removing and altering colnames to allow matching across datasets
 benthos_SN_data_PELD<-benthos_SN_data_PELD[,-which(colnames(benthos_SN_data_PELD) == "analyzedBy")]
-
 colnames(benthos_SN_data_PELD) [which(colnames(benthos_SN_data_PELD) == "measurementeUnity")] <- "measurementUnit"
-
-
 
 
 # ----------------------------------------------
@@ -486,8 +444,9 @@ compiled_benthic_data<- rbind (benthos_SN_data_aued,
                                benthos_SN_data_abrolhos,
                                benthos_SN_data_PELD)
 
-#testB <- (compiled_benthic_data[which(compiled_benthic_data$spp == "Montastraea cavernosa" ),])
-#testB [which(testB$measurementValue > 0 & testB$site == "ilhasc_sul"),]
+
+#intersect_dataB <- (compiled_benthic_data[which(compiled_benthic_data$spp == "Montastraea cavernosa" ),])
+#intersect_dataB [which(intersect_dataB$measurementValue > 0 & intersect_dataB$site == "ilhasc_sul"),]
 
 
 ## subset of sites we want
@@ -561,8 +520,6 @@ compiled_benthic_data_corals <- compiled_benthic_data [records_of_corals,]
 
 
 
-
-
 # benthos except corals per location
 
 
@@ -597,12 +554,11 @@ coral_composition <- (cast(compiled_benthic_data_corals, formula = site~spp,
 
 # df for pie chart
 pie_charts_corals <- data.frame (site = coral_composition[,which(colnames(coral_composition) %in% c("site"))],
-                                  SR_corals=rowSums(coral_composition[,-which(colnames(coral_composition) %in% c("site", "NA"))]>0.1,na.rm=T))
+                                  SR_corals=rowSums(coral_composition[,-which(colnames(coral_composition) %in% c("site", "NA"))]>0,na.rm=T))
 
 # match order 
 pie_charts_corals<-pie_charts_corals[match (sites_benthos,
                                             pie_charts_corals$site),]
-
 
 
 
@@ -621,21 +577,17 @@ pie_charts_coral_endemics <- data.frame (site = coral_endemics[,1],
 pie_charts_coral_endemics<-pie_charts_coral_endemics[match (sites_benthos,
                                                             pie_charts_coral_endemics$site),]
 
-
 ## cbind
 pie_charts_benthos <- cbind (pie_charts_benthos,
                              SR_corals=pie_charts_corals$SR_corals,
                              SR_corals_endemics = pie_charts_coral_endemics$SR_coral_endemics,
                              SR_total = pie_charts_benthos_complete$SR_benthos)
 
-
 # discounting endemics and corals
 pie_charts_benthos$SR_benthos <- pie_charts_benthos$SR_total - (pie_charts_benthos$SR_corals - pie_charts_benthos$SR_corals_endemics)
 
-
 # melt
 pie_charts_benthos<- melt(pie_charts_benthos,id.vars = c("site", "SR_total"))
-
 
 # draw pie chart
 # one chart per site
@@ -660,6 +612,7 @@ pie_benthos <- lapply (sites_benthos, function (i)
       scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
       
 )
+
 
 
 # save fig 1
@@ -705,15 +658,12 @@ grid.arrange(# map
 dev.off()
 
 
-
-
 # other option
-
 pie_charts_benthos$site <- factor(pie_charts_benthos$site,
                           levels = sites_benthos)
 
 # benthos piechart
-
+# size == richness
 benthic_charts <- pie_charts_benthos %>%
   
   ggplot(aes(x=0, y = value, 
@@ -730,7 +680,33 @@ benthic_charts <- pie_charts_benthos %>%
   
   scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
 
+benthic_charts
+ggsave (file = here ("output", "pizza_benthos.pdf"))
 
+
+# benthos piechart
+# equal size
+benthic_charts_equal_size <- pie_charts_benthos %>%
+  
+  ggplot(aes(x=0, y = value, 
+             fill = variable, 
+             width = 1)) +
+  
+  geom_bar(position="fill", stat="identity") + 
+  coord_polar("y") +
+  facet_wrap(~ site,ncol=2) + 
+  scale_y_continuous(expand = c(0,0))+
+  geom_text(aes(x=0,y = value/max(value), label=value))+
+  theme_classic() +
+  theme(legend.position = "top") +
+  
+  scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
+
+benthic_charts_equal_size
+ggsave (file = here ("output", "pizza_benthos_equal_size.pdf"))
+
+
+# plot composition
 pdf (here ("output", "fig1_raw_opt2.pdf"),width = 10,height=7)
 
 ## arrange
@@ -762,23 +738,14 @@ plot(Brazil_latlong,add=T,col="gray")
 plot(BR_reefs,add=T,col="orange")
 dev.off()
 
-# project
-# esfera das MPAs
-#data.frame (t(table(marine_pas_lambert$esfera))) %>%
-#  
-#ggplot(aes(x=0, y = Freq, 
-#           fill = Var2)) +
-#  
-#  geom_bar(stat="identity",width=1) + 
-#  coord_polar("y") +
-#  #facet_wrap(~ site,ncol=1) + 
-#  scale_y_continuous(expand = c(0,0))+
-#  geom_text(aes(x=0,y = Freq, label=Freq))+
-#  theme_void()+
-#  theme(legend.position = "top")
 
+# ========================================================
+# MPA statistics
 
 # data From RQMA
+
+
+
 data.frame (esfera = c("federal", "estadual", "municipal"),
             Freq = c(70,84,36)) %>% 
  ggplot(aes(x=0, y = Freq, 
@@ -819,37 +786,43 @@ spsp_lambert <- spTransform(spsp,
                             CRS("+proj=laea +lat_0=0 +lon_0=0"))
 
 
-
-
+# maps into lambert
+intersection_ZEE_mpas_lambert <- spTransform(intersection_ZEE_mpas,CRS("+proj=laea +lat_0=0 +lon_0=0"))
 
 # intersect_mpas_reefs 
-test <- terra::intersect (marine_pas_lambert[3,],BR_reefs_lambert)
-plot(test,border="red")
-plot(marine_pas_lambert[3,],add=T,lty=2)
+intersect_data <- terra::intersect (intersection_ZEE_mpas_lambert[2,],BR_reefs_lambert)
+plot(intersect_data,border="red")
+plot(intersection_ZEE_mpas_lambert[2,],add=T,lty=2)
 plot(BR_reefs_lambert,add=T,lty=2,col="green3")
-plot(test,border="red",col="red",add=T)
-
-
+plot(intersect_data,border="red",col="red",add=T)
 
 # intersect the area
-intersect_reefs_mpa <- lapply (seq (1,length(marine_pas_lambert$fid)), function (i) 
+intersect_reefs_mpa <- lapply (seq (1,length(intersection_ZEE_mpas_lambert$fid)), function (i) 
   tryCatch (
-    terra::intersect (marine_pas_lambert[i,],BR_reefs_lambert),
+    terra::intersect (intersection_ZEE_mpas_lambert[i,],BR_reefs_lambert),
     error = function (e) print(NA))
 )
+
 # penedos
 # intersect the area
-intersect_reefs_penedos <- lapply (seq (1,length(marine_pas_lambert$fid)), function (i) 
+intersect_reefs_penedos <- lapply (seq (1,length(intersection_ZEE_mpas_lambert$fid)), function (i) 
   tryCatch (
-    terra::intersect (marine_pas_lambert[i,],spsp_lambert),
+    terra::intersect (intersection_ZEE_mpas_lambert[i,],spsp_lambert),
     error = function (e) print(NA))
 )
-# save(intersect_reefs_mpa,intersect_reefs_penedos,file= here ("output", "intersect_reefs_mpa.RData"))
 
-plot(intersect_reefs_mpa[[3]],border="red",col="red")
-plot(marine_pas_lambert[3,],add=T,lty=2)
+# save
+save(intersect_reefs_mpa,
+     intersect_reefs_penedos,
+     file= here ("output", "intersect_reefs_mpa.RData")
+     )
+#load(here ("output", "intersect_reefs_mpa.RData"))
+
+
+plot(intersect_reefs_mpa[[194]])
+plot(intersection_ZEE_mpas_lambert[194,],add=T,lty=2,border="red")
 plot(BR_reefs_lambert,add=T,lty=2,col="green3")
-plot(intersect_reefs_mpa[[3]],border="red",col="red",add=T)
+plot(intersect_reefs_mpa[[194]],border="red",add=T)
 
 
 # map
@@ -905,7 +878,7 @@ reef_area_within_mpas<- c(reef_area_within_mpas,reef_area_within_mpas_penedos)
 
 # total reef area
 total_reef_area <- gArea(BR_reefs_lambert)+gArea(spsp_lambert)
-
+total_reef_area/gArea (br_eez_lambert)
 
 # proportion
 melt(data.frame (unprotected=1-0.374,
@@ -915,7 +888,7 @@ melt(data.frame (unprotected=1-0.374,
              fill = variable     )) +
   
   geom_bar(stat="identity") + 
-  #coord_polar("y") +
+  coord_polar("y") +
   #facet_wrap(~ site,ncol=1) + 
   #scale_y_continuous(expand = c(0,0))+
   geom_text(aes(x=0,y = value, 
@@ -973,8 +946,6 @@ data.frame (reef_area = unlist(reef_area_within_mpas),
 # of Mpas with reefs, which ones host more
 
 ggsave (file = here ("output", "contribution_MPA_with_reefs.pdf"))
-
-
 
 
 # ranking of mpas
