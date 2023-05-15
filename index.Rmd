@@ -2,7 +2,7 @@
 title: "Resumo de política apresentado ao CNPq / Policy brief presented to the Brazilian CNPq"
 author: "Reef Synthesis Working Group (página feita por / webpage made by André L. Luza)"
 date: "2023-05-15"
-output: github_document
+output: html_document
 ---
 
 

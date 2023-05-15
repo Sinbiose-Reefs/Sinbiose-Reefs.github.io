@@ -1,17 +1,15 @@
 Resumo de política apresentado ao CNPq / Policy brief presented to the
 Brazilian CNPq
 ================
-Reef Synthesis Working Group (Pesquisador de pós-doutorado: André L.
-Luza
-2023-05-08
+Reef Synthesis Working Group (página feita por / webpage made by André
+L. Luza)
+2023-05-15
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 <!-- badges: end -->
 
 <img src="output/Logo Completa CORES GDE.png" width="60%" height="60%" style="display: block; margin: auto;" />
-
-## 
 
 ### Fontes de dados / data sources
 
@@ -73,9 +71,6 @@ and Anthropogenic Drivers. PLoS ONE 8(1): e54260.
 Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados)
 / *LTER Brazilian Oceanic Islands (unpublished data)*.
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 Os dados de desembarque foram obtidos da seguinte fonte / *Data of
 fisheries’ landings were gathered from*:
 
@@ -89,16 +84,21 @@ Marine Commercial Landings for the Brazilian Industrial and Artisanal
 Fisheries From 1950 to 2015. Front Mar Sci 8:1–16. DOI:
 10.3389/fmars.2021.659110
 
-#### Decisões analíticas importantes / *Important analytical decisions*:
+<!-- badges: start -->
+<!-- badges: end -->
+
+### Decisões analíticas importantes / *Important analytical decisions*:
 
 - Dados de desembarque de 2000 pra diante foram utilizados para o
   cálculo da contribuição da pesca artesanal e industrial para o
   montante total desembarcado nas regiões / *Landing data from 2000
   onwards were used to calculate the contribution of artisanal and
-  industrial fisheries sectors to the total amount landed in the
-  regions*.
+  industrial sectors to the total amount landed in the regions*.
 
-#### O resumo foi produzido utilizando o seguinte software e pacotes / *This policy brief was produced using the following software and associated packages*:
+<!-- badges: start -->
+<!-- badges: end -->
+
+### O resumo foi produzido utilizando o seguinte software e pacotes / *This policy brief was produced using the following software and associated packages*:
 
     ## R version 4.3.0 (2023-04-21 ucrt)
     ## Platform: x86_64-w64-mingw32/x64 (64-bit)

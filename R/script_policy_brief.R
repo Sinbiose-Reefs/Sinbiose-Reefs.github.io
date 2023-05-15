@@ -741,20 +741,16 @@ dev.off()
 
 # ========================================================
 # MPA statistics
-
 # data From RQMA
 
-
-
-data.frame (esfera = c("federal", "estadual", "municipal"),
-            Freq = c(70,84,36)) %>% 
- ggplot(aes(x=0, y = Freq, 
+data.frame (esfera = c("estadual","federal", "municipal"),
+            Freq = c(84,70,36)) %>% 
+ ggplot(aes(x=reorder (esfera,Freq), y = Freq, 
             fill = esfera)) +
    
-   geom_bar(stat="identity",position = "stack",width=1) + 
-   #coord_polar("y") +
-   #facet_wrap(~ site,ncol=1) + 
-   scale_y_continuous(expand = c(0,0))+
+   geom_bar(stat="identity",position="stack",width=0.5) + 
+   coord_polar("y") +
+   scale_y_continuous(expand = c(0,20))+
    geom_text(aes(x=0,y = Freq, label=Freq))+
    theme_void()+
    theme(legend.position = "top")
