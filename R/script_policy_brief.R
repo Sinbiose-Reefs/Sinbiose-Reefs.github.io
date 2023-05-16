@@ -230,9 +230,9 @@ sites_fish <- lapply (sites , function (i){
 
   # all species, non-endemics and endemics
   df_pie <- data.frame (site = i ,
-                        total.SR = sum(table(sites_fish$Species %in% BR_endemics)),
-                        endemics.SR = table(sites_fish$Species %in% BR_endemics)[2]#,
-                        #non.endemics.SR = table(sites_fish$Species %in% BR_endemics)[1]
+                        #total.SR = sum(table(sites_fish$Species %in% BR_endemics)),
+                        endemics.SR = table(sites_fish$Species %in% BR_endemics)[2],
+                        non.endemics.SR = table(sites_fish$Species %in% BR_endemics)[1]
                         )
   
   # discounting 
@@ -295,7 +295,28 @@ fish_charts <- df_SR_fish%>%
   theme(legend.position = "top")+ 
   scale_fill_manual (values = c ("#3d5a80", "#7da8ba"))
 
+ggsave (file = here ("output", "pizza_fish.pdf"))
 
+
+# produce charts
+fish_charts_equal_size <- df_SR_fish%>%
+  
+  ggplot(aes(x=0, y = value, 
+             fill = variable, 
+             width = 1)) +
+  
+  geom_bar(position="fill", stat="identity") + 
+  coord_polar("y") +
+  facet_wrap(~ site,ncol=2) + 
+  scale_y_continuous(expand = c(0,0))+
+  geom_text(aes(x=0,y = value/max(value), label=value))+
+  theme_classic() +
+  theme(legend.position = "top")+ 
+  scale_fill_manual (values = c ("#3d5a80", "#7da8ba"))
+
+fish_charts_equal_size
+
+ggsave (file = here ("output", "pizza_fish_equal_size.pdf"))
 
 # -------------------------------
 
@@ -507,7 +528,6 @@ pie_charts_benthos_complete<-pie_charts_benthos_complete[match (sites_benthos,
                                                                 pie_charts_benthos_complete$site),]
 
 
-
 # --------------------------
 
 # non corals
@@ -522,13 +542,10 @@ compiled_benthic_data_corals <- compiled_benthic_data [records_of_corals,]
 
 # benthos except corals per location
 
-
 benthic_composition <- (cast(compiled_benthic_data_non_corals, formula = site~spp,
                                value = "measurementValue",
                                fun = mean,
                              na.rm=T,fill=0))
-
-
 
 
 
@@ -579,12 +596,10 @@ pie_charts_coral_endemics<-pie_charts_coral_endemics[match (sites_benthos,
 
 ## cbind
 pie_charts_benthos <- cbind (pie_charts_benthos,
-                             SR_corals=pie_charts_corals$SR_corals,
+                             SR_non_endemic_corals=pie_charts_corals$SR_corals-pie_charts_coral_endemics$SR_coral_endemics,
                              SR_corals_endemics = pie_charts_coral_endemics$SR_coral_endemics,
                              SR_total = pie_charts_benthos_complete$SR_benthos)
 
-# discounting endemics and corals
-pie_charts_benthos$SR_benthos <- pie_charts_benthos$SR_total - (pie_charts_benthos$SR_corals - pie_charts_benthos$SR_corals_endemics)
 
 # melt
 pie_charts_benthos<- melt(pie_charts_benthos,id.vars = c("site", "SR_total"))
