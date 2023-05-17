@@ -1,0 +1,22 @@
+name: ""
+output_dir: "."
+navbar:
+  title: ""
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Data handling documentation"
+      href: Documentation.html
+    - text: "ReefSYN Website"
+      href: https://reefsyn.weebly.com/home-us.html
+    - text: "ReefSYN Instagram"
+      href: https://www.instagram.com/reefsyn/?hl=en
+    - text: "ReefSYN publications' list"
+      href: https://reefsyn.weebly.com/publicacoes.html
+    #- text: "Colaboration with GitHub"
+    #  href: colabs_git.html
+    #- text: "Version control basics"
+    #  href: basics_git.html
+      
+
+     

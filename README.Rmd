@@ -28,53 +28,20 @@ knitr::include_graphics("output/Logo Completa CORES GDE.png")
 
 
 
-### Fontes de dados / data sources
+##### Fontes de dados e decisões analíticas relevantes para a produção deste documento podem ser encontradas na nossa página https://sinbiose-reefs.github.io/ 
 
-Os dados sobre a representatividade das áreas marinhas protegidas dentro da Zona Econômica Exclusiva do Brasil foram obtidos da seguinte fonte / *Data about the representation of marine protected areas within the Economic Exclusive Zone were gathered from the following source*:
+##### *Data sources and important analytical decisions made to produce this document can be found in our website* https://sinbiose-reefs.github.io/
 
-Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis. Relatório de qualidade do meio ambiente. [recurso eletrônico]: RQMA Brasil 2020 / Hanry Alves Coelho, Andrea Alimandro Corrêa (coordenação). – Brasília, DF: IBAMA, 2022. 558 p. Acessado em / Accessed in: 08/05/2023. Disponível em / Available at: [https://www.gov.br/ibama/pt-br/phocadownload/qualidadeambiental/relatorios/2022/2022-06-03_RQMA_Brasil_2020.pdf]
+##### Mais informações sobre nosso time podem ser encontradas na página do Laboratório de Macroecologia e Conservação Marinha (LMCM) at https://benderlab.weebly.com/ e na página do Grupo de Síntese de Ecossistemas Recifais (ReefSYN) em https://reefsyn.weebly.com/home-us.html
 
-
-As porcentagens de representatividade de ecossistemas recifais dentro de áreas marinhas protegidas foram obtidas de Rafael Magris, baseadas em dados do Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio) / *The representativeness of reef ecosystems within marine protected areas were obtained from Rafael Magris, based on data from the Chico Mendes Institute for Biodiversity Conservation (ICMBio)*.
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-A lista de espécies de peixes recifais foi obtida da seguinte fonte  / *The reef fish checklist was gathered from the following reference*:
-
-Pinheiro, HT, Rocha, LA, Macieira, RM, et al. South-western Atlantic reef fishes: Zoogeographical patterns and ecological drivers reveal a secondary biodiversity centre in the Atlantic Ocean. Divers Distrib. 2018; 24: 951– 965. https://doi.org/10.1111/ddi.12729
-
-A lista de táxons bentônicos foi produzida segundo as seguintes fontes de dados (alguns dados ainda não foram publicados) / *The list of benthic taxa was produced using data from the following references (some data are unpublished)*:
-
-Aued AW, Smith F, Quimbayo JP, Cândido DV, Longo GO, Ferreira CEL, … Segal B (2018). Large-scale patterns of benthic marine communities in the Brazilian Province. PLoS ONE, 13(6), e0198452. https://doi.org/10.1371/journal.pone.0198452
-
-Santana, EFC, Mies, M, Longo, GO, Menezes, R, Aued, AW, Luza, AL, … Francini-Filho, RB. (2023). Turbidity shapes shallow Southwestern Atlantic benthic reef communities. Marine Environmental Research, 183, 105807. https://doi.org/10.1016/j.marenvres.2022.105807
-
-Roos NC, Pennino MG, Carvalho AR, Longo GO (2019) Drivers of abundance and biomass of Brazilian parrotfishes. Mar Ecol Prog Ser 623:117-130. https://doi.org/10.3354/meps13005
-
-Francini-Filho RB, Coni EOC, Meirelles PM, Amado-Filho GM, Thompson FL, Pereira-Filho GH, et al. (2013) Dynamics of Coral Reef Benthic Assemblages of the Abrolhos Bank, Eastern Brazil: Inferences on Natural and Anthropogenic Drivers. PLoS ONE 8(1): e54260. https://doi.org/10.1371/journal.pone.0054260
-
-Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados) / *LTER Brazilian Oceanic Islands (unpublished data)*.
-
-Todos os conjuntos de dados foram utilizados para delimitar o número de táxons de corais (a nível de gênero e espécie), enquanto que somente os dados de Aued et al. (2018) foram utilizados para delimitar o número de táxons de outros grupos taxonômicos. Nós tomamos essa decisão porque a resolução taxonômica dos corais é similar entre os diferentes conjuntos de dados, enquanto difere substancialmente entre os conjuntos de dados para os outros grupos / *All datasets were used to determine the number of coral taxa (at the genus and species level), while only the dataset of Aued et al. (2018) was used to determine the number of taxa for other taxonomic groups. We made this decision because the taxonomic resolution of corals is similar among the different datasets, while it differs among datasets for the other groups.*
-
-Os dados de desembarque foram obtidos da seguinte fonte / *Data of fisheries' landings were gathered from the following source*: 
-
-Freire KMF, Almeida da Silva Z, Trindade Amador J, Aragão JA, Araújo da Rocha AR, Ávila-da-Silva AO, Bentes B, Carneiro MH, Chiquieri J, Fernandes Freire C, Bezerra Figueiredo M, Hostim-Silva M, Jimenez EA, Keunecke KA, Lopes PF de M, Mendonça J, Musiello- Fernandes J, Olavo G, Primitivo C, Rotundo M, Santana R, Sant’Ana R, Scheidt G, Abdon da Silva LM, Trindade-Santos I, Velasco G, Vianna M (2021) Reconstruction of Marine Commercial Landings for the Brazilian Industrial and Artisanal Fisheries From 1950 to 2015. Front Mar Sci 8:1–16. DOI: 10.3389/fmars.2021.659110
-
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-### Decisões analíticas importantes / *Important analytical decisions*:
-- Dados de desembarque de 2000 pra diante foram utilizados para o cálculo da contribuição da pesca artesanal e industrial para o montante total desembarcado nas regiões / *Landing data from 2000 onwards were used to calculate the contribution of artisanal and industrial sectors to the total amount landed in the regions*. 
+##### *Further information about our team can be found in the website of the Marine Macroecology and Conservation Lab at* https://benderlab.weebly.com/ *and the Reef Synthesis Working Group (ReefSYN) website* at https://reefsyn.weebly.com/home-us.html
 
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 
-### O resumo foi produzido utilizando o seguinte software e pacotes / *This policy brief was produced using the following software and associated packages*:
+##### O resumo foi produzido utilizando o seguinte software e pacotes / *This policy brief was produced using the following software and associated packages*:
 
 ```{r pressure, echo=F,warning=F,message=F}
 

@@ -58,7 +58,6 @@ Francini-Filho RB, Coni EOC, Meirelles PM, Amado-Filho GM, Thompson FL, Pereira-
 
 Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados) / *LTER Brazilian Oceanic Islands (unpublished data)*.
 
-Todos os conjuntos de dados foram utilizados para delimitar o número de táxons de corais (a nível de gênero e espécie), enquanto que somente os dados de Aued et al. (2018) foram utilizados para delimitar o número de táxons de outros grupos taxonômicos. Nós tomamos essa decisão porque a resolução taxonômica dos corais é similar entre os diferentes conjuntos de dados, enquanto difere substancialmente entre os conjuntos de dados para os outros grupos / *All datasets were used to determine the number of coral taxa (at the genus and species level), while only the dataset of Aued et al. (2018) was used to determine the number of taxa for other taxonomic groups. We made this decision because the taxonomic resolution of corals is similar among the different datasets, while it differs among datasets for the other groups.*
 
 Os dados de desembarque foram obtidos da seguinte fonte / *Data of fisheries' landings were gathered from the following source*: 
 
@@ -69,7 +68,18 @@ Freire KMF, Almeida da Silva Z, Trindade Amador J, Aragão JA, Araújo da Rocha 
 <!-- badges: end -->
 
 ### Decisões analíticas importantes / *Important analytical decisions*:
-- Dados de desembarque de 2000 pra diante foram utilizados para o cálculo da contribuição da pesca artesanal e industrial para o montante total desembarcado nas regiões / *Landing data from 2000 onwards were used to calculate the contribution of artisanal and industrial sectors to the total amount landed in the regions*. 
+- Dados de desembarque de 2000 pra diante foram utilizados para o cálculo da contribuição da pesca artesanal e industrial para o montante total desembarcado nas regiões / *Landing data from 2000 onwards were used to calculate the contribution of artisanal and industrial sectors to the total amount landed in the regions.* 
+
+- Todos os conjuntos de dados foram utilizados para delimitar o número de táxons de corais (a nível de gênero e espécie), enquanto que somente os dados de Aued et al. (2018) foram utilizados para delimitar o número de táxons de outros grupos taxonômicos. Nós tomamos essa decisão porque a resolução taxonômica dos corais é similar entre os diferentes conjuntos de dados, enquanto difere substancialmente entre os conjuntos de dados para os outros grupos / *All datasets were used to determine the number of coral taxa (at the genus and species level), while only the dataset of Aued et al. (2018) was used to determine the number of taxa for other taxonomic groups. We made this decision because the taxonomic resolution of corals is similar among the different datasets, while it differs among datasets for the other groups.*
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+
+
+##### Mais informações sobre nosso time podem ser encontradas na página do Laboratório de Macroecologia e Conservação Marinha (LMCM) at https://benderlab.weebly.com/ e na página do Grupo de Síntese de Ecossistemas Recifais (ReefSYN) em https://reefsyn.weebly.com/home-us.html
+
+##### *Further information about our team can be found in the website of the Marine Macroecology and Conservation Lab at* https://benderlab.weebly.com/ *and the Reef Synthesis Working Group (ReefSYN) website* at https://reefsyn.weebly.com/home-us.html
 
 
 <!-- badges: start -->
