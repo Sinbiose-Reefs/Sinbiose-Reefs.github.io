@@ -8,3 +8,4 @@ output/*.svg
 R/script.R
 data
 manuscript
+site_libs
