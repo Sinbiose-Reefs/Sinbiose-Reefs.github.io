@@ -8,4 +8,3 @@ output/*.svg
 R/script.R
 data
 manuscript
-_site.yml
