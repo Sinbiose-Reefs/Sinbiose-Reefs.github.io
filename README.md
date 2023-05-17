@@ -3,7 +3,7 @@ Brazilian CNPq
 ================
 Reef Synthesis Working Group (página feita por / webpage made by André
 L. Luza)
-2023-05-15
+2023-05-17
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
@@ -71,8 +71,21 @@ and Anthropogenic Drivers. PLoS ONE 8(1): e54260.
 Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados)
 / *LTER Brazilian Oceanic Islands (unpublished data)*.
 
+Todos os conjuntos de dados foram utilizados para delimitar o número de
+táxons de corais (a nível de gênero e espécie), enquanto que somente os
+dados de Aued et al. (2018) foram utilizados para delimitar o número de
+táxons de outros grupos taxonômicos. Nós tomamos essa decisão porque a
+resolução taxonômica dos corais é similar entre os diferentes conjuntos
+de dados, enquanto difere substancialmente entre os conjuntos de dados
+para os outros grupos / *All datasets were used to determine the number
+of coral taxa (at the genus and species level), while only the dataset
+of Aued et al. (2018) was used to determine the number of taxa for other
+taxonomic groups. We made this decision because the taxonomic resolution
+of corals is similar among the different datasets, while it differs
+among datasets for the other groups.*
+
 Os dados de desembarque foram obtidos da seguinte fonte / *Data of
-fisheries’ landings were gathered from*:
+fisheries’ landings were gathered from the following source*:
 
 Freire KMF, Almeida da Silva Z, Trindade Amador J, Aragão JA, Araújo da
 Rocha AR, Ávila-da-Silva AO, Bentes B, Carneiro MH, Chiquieri J,
@@ -102,7 +115,7 @@ Fisheries From 1950 to 2015. Front Mar Sci 8:1–16. DOI:
 
     ## R version 4.3.0 (2023-04-21 ucrt)
     ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 10 x64 (build 19044)
+    ## Running under: Windows 10 x64 (build 19045)
     ## 
     ## Matrix products: default
     ## 

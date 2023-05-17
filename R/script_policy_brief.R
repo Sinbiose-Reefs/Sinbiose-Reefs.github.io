@@ -318,6 +318,8 @@ fish_charts_equal_size
 
 ggsave (file = here ("output", "pizza_fish_equal_size.pdf"))
 
+
+
 # -------------------------------
 
 
@@ -457,8 +459,15 @@ colnames(benthos_SN_data_PELD) [which(colnames(benthos_SN_data_PELD) == "measure
 
 # ----------------------------------------------
 
+# aued's data will be used for totals
+aued_data <- benthos_SN_data_aued %>% 
+  mutate(site = recode(site, "rgnor_natal" = "rgnor",
+                       "rgnor_parrachos" = "rgnor"
+  ))
+
 
 # bind benthic data of these five datasets
+# compiled data will be used for corals
 compiled_benthic_data<- rbind (benthos_SN_data_aued,
                                 benthos_SN_data_ross,
                                 benthos_SN_data_francini,
@@ -477,7 +486,7 @@ sites_benthos <- c ("manuel_luis", "rocas","noronha", "rgnor","abrolhos","trinda
 
 # subset
 compiled_benthic_data<- compiled_benthic_data[which(compiled_benthic_data$site %in% sites_benthos),]
-
+aued_data <- aued_data[which(aued_data$site %in% sites_benthos),]
 
 
 # remove corals (we will do one for them)
@@ -499,69 +508,49 @@ endemic_corals <- c("Siderastrea stellata",
                     "Meandrina brasiliensis")
 
 
-# find the lines with corals
+# find the lines with corals in Aued's data
+records_of_corals_aued <- lapply (corals, function (i) 
+  
+  grep (i,aued_data$spp)
+  
+  )
+
+# find the lines with corals in the compiled dataset
 records_of_corals <- lapply (corals, function (i) 
   
   grep (i,compiled_benthic_data$spp)
   
-  )
+)
 
 
 # melt
+records_of_corals_aued <- unlist(records_of_corals_aued)
 records_of_corals <- unlist(records_of_corals)
 
+# remove corals
+aued_data <- aued_data [-records_of_corals_aued,]
+compiled_benthic_data_corals <- compiled_benthic_data [records_of_corals,]
 
 
 # complete spp composition with all species found across datasets
 # all spp
-complete_benthic_composition <- (cast(compiled_benthic_data, formula = site~spp,
+# Only ANaide Aued's data
+complete_benthic_composition <- (cast(aued_data, formula = site~spp,
                              value = "measurementValue",
                              fun = mean,
                              na.rm=T,fill=0))
 
 # df for pie chart
-pie_charts_benthos_complete <- data.frame (site = complete_benthic_composition[,which(colnames(complete_benthic_composition) == "site")],
+pie_charts_benthos <- data.frame (site = complete_benthic_composition[,which(colnames(complete_benthic_composition) == "site")],
                                   SR_benthos=rowSums(complete_benthic_composition[,-which(colnames(complete_benthic_composition) %in% c("site", "NA"))]>0,na.rm=T))
 
 # match order 
-pie_charts_benthos_complete<-pie_charts_benthos_complete[match (sites_benthos,
-                                                                pie_charts_benthos_complete$site),]
+pie_charts_benthos <-pie_charts_benthos[match (sites_benthos,
+                                               pie_charts_benthos$site),]
 
 
 # --------------------------
-
-# non corals
-compiled_benthic_data_non_corals <- compiled_benthic_data [-records_of_corals,]
- 
-
-
-#  corals
-compiled_benthic_data_corals <- compiled_benthic_data [records_of_corals,]
-
-
-
-# benthos except corals per location
-
-benthic_composition <- (cast(compiled_benthic_data_non_corals, formula = site~spp,
-                               value = "measurementValue",
-                               fun = mean,
-                             na.rm=T,fill=0))
-
-
-
-# df for pie chart
-pie_charts_benthos <- data.frame (site = benthic_composition[,which(colnames(benthic_composition) %in% c("site"))],
-                                  SR_benthos=rowSums(benthic_composition[,-which(colnames(benthic_composition) %in% c("site", "NA"))]>0,na.rm=T))
-
-
-
-# match order 
-pie_charts_benthos<-pie_charts_benthos[match (sites_benthos,
-                                              pie_charts_benthos$site),]
-
-
-
-
+# corals using all datasources
 # corals
 
 coral_composition <- (cast(compiled_benthic_data_corals, formula = site~spp,
@@ -581,8 +570,6 @@ pie_charts_corals<-pie_charts_corals[match (sites_benthos,
 
 # -----------------------------
 # endemics
-
-
 coral_endemics <- coral_composition[,c(1,which(colnames(coral_composition) %in% endemic_corals))]
 
 
@@ -597,12 +584,15 @@ pie_charts_coral_endemics<-pie_charts_coral_endemics[match (sites_benthos,
 ## cbind
 pie_charts_benthos <- cbind (pie_charts_benthos,
                              SR_non_endemic_corals=pie_charts_corals$SR_corals-pie_charts_coral_endemics$SR_coral_endemics,
-                             SR_corals_endemics = pie_charts_coral_endemics$SR_coral_endemics,
-                             SR_total = pie_charts_benthos_complete$SR_benthos)
+                             SR_corals_endemics = pie_charts_coral_endemics$SR_coral_endemics)
 
+
+
+pie_charts_benthos$SR_total_pizza_size <- pie_charts_benthos$SR_benthos +pie_charts_benthos$SR_non_endemic_corals+pie_charts_benthos$SR_corals_endemics
+  
 
 # melt
-pie_charts_benthos<- melt(pie_charts_benthos,id.vars = c("site", "SR_total"))
+pie_charts_benthos<- melt(pie_charts_benthos,id.vars = c("site","SR_total_pizza_size"))
 
 # draw pie chart
 # one chart per site
@@ -683,15 +673,18 @@ benthic_charts <- pie_charts_benthos %>%
   
   ggplot(aes(x=0, y = value, 
              fill = variable, 
-             width = SR_total/max(SR_total))) +
+             width = SR_total_pizza_size/max(SR_total_pizza_size))) +
   
   geom_bar(position="fill", stat="identity") + 
   coord_polar("y") +
-  facet_wrap(~ site,ncol=2) + 
+  facet_wrap(~ site,ncol=1) + 
   scale_y_continuous(expand = c(0,0))+
   geom_text(aes(x=0,y = value/max(value), label=value))+
-  theme_classic() +
-  theme(legend.position = "top") +
+  theme_void() +
+  theme(legend.position = "top",
+        axis.title.x = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank()) +
   
   scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
 
@@ -709,13 +702,17 @@ benthic_charts_equal_size <- pie_charts_benthos %>%
   
   geom_bar(position="fill", stat="identity") + 
   coord_polar("y") +
-  facet_wrap(~ site,ncol=2) + 
+  facet_wrap(~ site,ncol=1) + 
   scale_y_continuous(expand = c(0,0))+
   geom_text(aes(x=0,y = value/max(value), label=value))+
-  theme_classic() +
-  theme(legend.position = "top") +
+  theme_void() +
+  theme(legend.position = "top",
+        axis.title.x = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank()) +
   
   scale_fill_manual (values = c ("#ee6c4d", "#df3720","#7e2110"))
+
 
 benthic_charts_equal_size
 ggsave (file = here ("output", "pizza_benthos_equal_size.pdf"))

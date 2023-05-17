@@ -1,7 +1,7 @@
 ---
 title: "Resumo de política apresentado ao CNPq / Policy brief presented to the Brazilian CNPq"
 author: "Reef Synthesis Working Group (página feita por / webpage made by André L. Luza)"
-date: "2023-05-15"
+date: "2023-05-17"
 output: html_document
 ---
 
@@ -26,6 +26,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::include_graphics("output/Logo Completa CORES GDE.png")
 
 ```
+
 
 
 
@@ -57,7 +58,9 @@ Francini-Filho RB, Coni EOC, Meirelles PM, Amado-Filho GM, Thompson FL, Pereira-
 
 Cordeiro et al.: PELD Ilhas Oceânicas Brasileiras (dados não publicados) / *LTER Brazilian Oceanic Islands (unpublished data)*.
 
-Os dados de desembarque foram obtidos da seguinte fonte / *Data of fisheries' landings were gathered from*: 
+Todos os conjuntos de dados foram utilizados para delimitar o número de táxons de corais (a nível de gênero e espécie), enquanto que somente os dados de Aued et al. (2018) foram utilizados para delimitar o número de táxons de outros grupos taxonômicos. Nós tomamos essa decisão porque a resolução taxonômica dos corais é similar entre os diferentes conjuntos de dados, enquanto difere substancialmente entre os conjuntos de dados para os outros grupos / *All datasets were used to determine the number of coral taxa (at the genus and species level), while only the dataset of Aued et al. (2018) was used to determine the number of taxa for other taxonomic groups. We made this decision because the taxonomic resolution of corals is similar among the different datasets, while it differs among datasets for the other groups.*
+
+Os dados de desembarque foram obtidos da seguinte fonte / *Data of fisheries' landings were gathered from the following source*: 
 
 Freire KMF, Almeida da Silva Z, Trindade Amador J, Aragão JA, Araújo da Rocha AR, Ávila-da-Silva AO, Bentes B, Carneiro MH, Chiquieri J, Fernandes Freire C, Bezerra Figueiredo M, Hostim-Silva M, Jimenez EA, Keunecke KA, Lopes PF de M, Mendonça J, Musiello- Fernandes J, Olavo G, Primitivo C, Rotundo M, Santana R, Sant’Ana R, Scheidt G, Abdon da Silva LM, Trindade-Santos I, Velasco G, Vianna M (2021) Reconstruction of Marine Commercial Landings for the Brazilian Industrial and Artisanal Fisheries From 1950 to 2015. Front Mar Sci 8:1–16. DOI: 10.3389/fmars.2021.659110
 
