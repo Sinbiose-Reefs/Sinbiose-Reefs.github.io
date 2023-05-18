@@ -17,7 +17,7 @@ L. Luza)
 
 ##### Mais informações sobre nosso time podem ser encontradas na página do Laboratório de Macroecologia e Conservação Marinha (LMCM) at <https://benderlab.weebly.com/> e na página do Grupo de Síntese de Ecossistemas Recifais (ReefSYN) em <https://reefsyn.weebly.com/home-us.html>
 
-##### *Further information about our team can be found in the website of the Marine Macroecology and Conservation Lab at* <https://benderlab.weebly.com/> *and the Reef Synthesis Working Group (ReefSYN) website* at <https://reefsyn.weebly.com/home-us.html>
+##### *Further information about our team can be found in the website of the Marine Macroecology and Conservation Lab at* <https://benderlab.weebly.com/> *and in the website of the Reef Synthesis Working Group (ReefSYN)* at <https://reefsyn.weebly.com/home-us.html>
 
 <!-- badges: start -->
 <!-- badges: end -->
