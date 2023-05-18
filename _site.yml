@@ -1,7 +1,7 @@
 name: ""
 output_dir: "."
 navbar:
-  title: ""
+  title: "ReefSYN WebPage"
   left:
     - text: "Home"
       href: index.html
